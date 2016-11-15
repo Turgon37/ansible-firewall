@@ -1,0 +1,19 @@
+#jinja2:trim_blocks: False
+# {{ ansible_managed }}
+
+*filter
+:INPUT {{ iptables6__filter_input_policy|upper }} [0:0]
+:FORWARD {{ iptables6__filter_forward_policy|upper }} [0:0]
+:OUTPUT {{ iptables6__filter_output_policy|upper }} [0:0]
+
+COMMIT
+
+*nat
+:PREROUTING {{ iptables6__nat_prerouting_policy|upper }} [0:0]
+{%- if ansible_distribution|lower != 'centos' %}
+:INPUT {{ iptables6__nat_input_policy|upper }} [0:0]
+{%- endif %}
+:OUTPUT {{ iptables6__nat_output_policy|upper }} [0:0]
+:POSTROUTING {{ iptables6__nat_postrouting_policy|upper }} [0:0]
+
+COMMIT

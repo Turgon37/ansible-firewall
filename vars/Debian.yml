@@ -1,0 +1,10 @@
+---
+# vars file for iptables (Debian specific)
+iptables__service_name: netfilter-persistent
+
+iptables__packages:
+  - iptables
+  - iptables-persistent
+
+iptables__configuration: /etc/iptables/rules.v4
+iptables6__configuration: /etc/iptables/rules.v6

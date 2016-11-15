@@ -1,0 +1,9 @@
+---
+
+- name: Include distribution specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags: ['firewall']
+
+- name: Include the firewall backend
+  include: "{{ firewall__engine }}.yml"
+  tags: ['firewall']

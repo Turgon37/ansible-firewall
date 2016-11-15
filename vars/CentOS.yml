@@ -1,0 +1,9 @@
+---
+# vars file for iptables (CentOS specific)
+
+iptables__packages:
+  - iptables
+  - iptables-services
+
+iptables__configuration: /etc/sysconfig/iptables
+iptables6__configuration: /etc/sysconfig/ip6tables

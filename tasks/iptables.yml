@@ -1,0 +1,44 @@
+---
+# tasks file for iptables
+- name: Install the latest version of firewall packages
+  package:
+    name: '{{ item }}'
+    state: latest
+  with_items:
+    - "{{ iptables__packages }}"
+  tags: ['firewall', 'iptables']
+
+- name: Create iptables configuration
+  become: yes
+  template:
+    src: iptables.j2
+    dest: "{{ iptables__configuration }}"
+    owner: root
+    group: root
+    mode: 0600
+  register: config_result
+  notify:
+   - restart iptables
+  tags: ['firewall', 'iptables']
+
+- name: Create iptables6 configuration
+  become: yes
+  template:
+    src: iptables6.j2
+    dest: "{{ iptables6__configuration }}"
+    owner: root
+    group: root
+    mode: 0600
+  register: config_result
+  notify:
+   - restart iptables
+  tags: ['firewall', 'iptables']
+
+- name: Ensure iptables is started and enabled on boot
+  become: yes
+  service:
+    name: "{{ iptables__service_name }}"
+    state: started
+    enabled: yes
+  changed_when: False
+  tags: ['firewall', 'iptables']
