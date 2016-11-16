@@ -13,6 +13,8 @@ At this day the role can be used to configure :
 
   * IPv4 firewall rules
 
+The IPv6 feature exist but has not been tested yet, so I discourage you to use it before I've performed some tests
+
 ## Configuration
 
 The variables that can be passed to this role and a brief description about them are as follows:
