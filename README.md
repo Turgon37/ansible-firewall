@@ -83,11 +83,23 @@ iptables__filter_rules:
   - chain: input
     protocol: tcp
     source_address: 172.16.0.0/12
-    in_interface: 
+    in_interface: eth0
     destination_address: "{{ hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'] }}"
     destination_port: 443
     comment: "Allow HTTPS"
     target: accept
 ```
 
-  * Complex rule with match s
+  * Complex rule with match sequence
+
+```
+iptables__filter_rules:
+  - chain: forward
+    protocol: tcp
+    in_interface: 'eth0'
+    destination_address: 172.16.1.1
+    out_interface: 'eth1'
+    match: -m multiport --dports 25,143,465,587,993
+    comment: "Forward all IMAP/SMTP ports"
+    target: accept
+```
