@@ -18,7 +18,7 @@ The firewalld is not implemented because I consider this tools as to high-level 
 
 ## Configuration
 
-  * The role accept theses list of parameters
+  * The role accept this list of parameters
 
 | Name                            | Description                                                                |
 | ------------------------------- | -------------------------------------------------------------------------- |
@@ -35,7 +35,7 @@ The firewalld is not implemented because I consider this tools as to high-level 
 | iptables__nat_postrouting_policy| The default policy for POSTROUTING chain in NAT table                            |
 | iptables__nat_rules             | The list of rules for NAT table                                            |
 
-  * In each list of rules, each rules can take the following 
+  * In each list of rules, each rules can take the following key-value (according to the condition at the right)
 
 | Key                   | Format                                     | Description                                  | Available                       |
 | ----------------------| -------------------------------------------| ---------------------------------------------|---------------------------------|
