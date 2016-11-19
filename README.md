@@ -1,6 +1,8 @@
 Ansible Role Firewall
 ========
 
+[![Build Status](https://travis-ci.org/Turgon37/ansible-firewall.svg?branch=master)](https://travis-ci.org/Turgon37/ansible-firewall)
+
 This roles allow configuration of firewall rules
 
 ## OS Family
