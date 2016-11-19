@@ -1,5 +1,6 @@
 ---
 # vars file for iptables (Ubuntu specific)
+iptables__service_name: iptables-persistent
 
 iptables__packages:
   - iptables
