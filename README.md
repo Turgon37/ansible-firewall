@@ -7,7 +7,7 @@ This roles allow configuration of firewall rules
 
 ## OS Family
 
-This role is available for Debian and CentOS
+This role is available for Debian, Ubuntu and CentOS
 
 ## Features
 
