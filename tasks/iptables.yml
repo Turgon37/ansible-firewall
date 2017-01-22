@@ -1,11 +1,55 @@
 ---
 # tasks file for iptables
 - name: Install the latest version of firewall packages
+  become: yes
   package:
     name: '{{ item }}'
     state: latest
   with_items:
     - "{{ iptables__packages }}"
+  tags: ['firewall', 'iptables']
+  
+- name: Include knockd init
+  include: install-knockd.yml
+  when: iptables__knock_rules | length > 0
+  tags: ['firewall', 'iptables']
+
+- name: Assert knockd variables
+  assert:
+    that:
+      - "'{{ item }}' not in {{ iptables__filter_additionnal_chains }}"
+      - "'{{ item }}' not in {{ iptables__nat_additionnal_chains }}"
+  with_items:
+    - '{{ iptables__knock_rules.keys() }}'
+  tags: ['firewall', 'iptables']
+
+- name: Append knockd chains to iptables
+  set_fact:
+    iptables__filter_additionnal_chains: "{{ iptables__filter_additionnal_chains }} + [ 'KNOCK_{{ item }}' ]"
+  with_items:
+    - '{{ iptables__knock_rules.keys() }}'
+  tags: ['firewall', 'iptables']
+
+- name: Create knockd configuration
+  become: yes
+  template:
+    src: knockd.conf.j2
+    dest: /etc/knockd.conf
+    owner: root
+    group: root
+    mode: 0600
+  register: knockd_config_result
+  notify:
+   - restart knockd
+  tags: ['firewall', 'iptables']
+
+- name: Assert firewall variables
+  assert:
+    that:
+      - "'{{ item }}' not in ['INPUT', 'OUPUT', 'FORWARD', 'POSTROUTING', 'PREROUTING']"
+  with_items:
+    - "{{ iptables__filter_additionnal_chains }}"
+    - "{{ iptables__nat_additionnal_chains }}"
   tags: ['firewall', 'iptables']
 
 - name: Create iptables configuration

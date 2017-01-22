@@ -7,3 +7,10 @@
     state: restarted
   changed_when: config_result|changed
   tags: ['firewall', 'iptables']
+
+- name: restart knockd
+  service:
+    name: "{{ knockd__service_name }}"
+    state: restarted
+  changed_when: knockd_config_result|changed
+  tags: ['firewall']

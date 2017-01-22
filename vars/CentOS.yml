@@ -7,3 +7,5 @@ iptables__packages:
 
 iptables__configuration: /etc/sysconfig/iptables
 iptables6__configuration: /etc/sysconfig/ip6tables
+
+knockd__package_name: knock-server

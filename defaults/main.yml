@@ -13,7 +13,11 @@ firewall__engine: 'iptables'
 # the name of the firewall service
 firewalld__service_name: firewalld
 
+# knock service name
+knockd__service_name: knockd
 
+# the name of the knock package
+knockd__package_name: knockd
 
 # Configuration for firewalld backend
 # -----------------
@@ -28,6 +32,9 @@ iptables__filter_input_policy: drop
 iptables__filter_forward_policy: drop
 iptables__filter_output_policy: accept
 
+# Declare some additionnals chains
+iptables__filter_additionnal_chains: []
+
 iptables__filter_rules:
   - chain: input
     protocol: tcp
@@ -36,11 +43,16 @@ iptables__filter_rules:
     comment: OpenSSH
     target: accept
 
+# Set rules for port knocking
+iptables__knock_rules: []
+
 iptables__nat_prerouting_policy: accept
 iptables__nat_input_policy: accept
 iptables__nat_output_policy: accept
 iptables__nat_postrouting_policy: accept
 
+# Declare some additionnals chains
+iptables__nat_additionnal_chains: []
 iptables__nat_rules: []
 
 ## Configuration for IPv6

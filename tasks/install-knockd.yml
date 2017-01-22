@@ -1,0 +1,42 @@
+---
+- name: 'Check if {{ knockd__package_name }} is installed'
+  become: yes
+  yum:
+     name: '{{ knockd__package_name }}'
+  ignore_errors: yes
+  register: rpm_check
+  when: ansible_os_family == 'RedHat'
+  tags: ['firewall', 'iptables']
+  
+- name: 'Download {{ knockd__package_name }}.rpm from repo'
+  get_url:
+    url: 'ftp://ftp.pbone.net/mirror/li.nux.ro/download/nux/misc/el7Client/x86_64/knock-server-0.7-1.el7.nux.x86_64.rpm'
+    dest: '/tmp/{{ knockd__package_name }}.rpm'
+    mode: 0440
+  when: ansible_os_family == 'RedHat' and rpm_check.failed is defined
+  check_mode: no
+  tags: ['firewall', 'iptables']
+
+- name: Install knock-server.rpm from rpm
+  become: yes
+  yum:
+     name: '/tmp/{{ knockd__package_name }}.rpm'
+     state: present
+  when: ansible_os_family == 'RedHat' and rpm_check.failed is defined
+  tags: ['firewall', 'iptables']
+
+- name: Install the latest version of knockd package
+  become: yes
+  package:
+    name: knockd
+    state: latest
+  when: ansible_os_family == 'Debian'
+  tags: ['firewall', 'iptables']
+  
+- name: Ensure knockd is enabled on boot
+  become: yes
+  service:
+    name: "{{ knockd__service_name }}"
+    enabled: yes
+  changed_when: False
+  tags: ['firewall', 'iptables']
