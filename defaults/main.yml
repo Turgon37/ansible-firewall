@@ -44,7 +44,7 @@ iptables__filter_rules:
     target: accept
 
 # Set rules for port knocking
-iptables__knock_rules: []
+iptables__knock_rules: {}
 
 iptables__nat_prerouting_policy: accept
 iptables__nat_input_policy: accept

@@ -8,10 +8,17 @@
   with_items:
     - "{{ iptables__packages }}"
   tags: ['firewall', 'iptables']
+
+- name: Determine if knockd is enabled
+  set_fact:
+    knock_feature_enabled: "{{ True if iptables__knock_rules | length > 0 else False }}"
+  tags: ['firewall', 'iptables']
+
+- debug: var=knock_feature_enabled
   
 - name: Include knockd init
   include: install-knockd.yml
-  when: iptables__knock_rules | length > 0
+  when: knock_feature_enabled
   tags: ['firewall', 'iptables']
 
 - name: Assert knockd variables
@@ -21,6 +28,7 @@
       - "'{{ item }}' not in {{ iptables__nat_additionnal_chains }}"
   with_items:
     - '{{ iptables__knock_rules.keys() }}'
+  when: knock_feature_enabled
   tags: ['firewall', 'iptables']
 
 - name: Append knockd chains to iptables
@@ -28,6 +36,7 @@
     iptables__filter_additionnal_chains: "{{ iptables__filter_additionnal_chains }} + [ 'KNOCK_{{ item }}' ]"
   with_items:
     - '{{ iptables__knock_rules.keys() }}'
+  when: knock_feature_enabled
   tags: ['firewall', 'iptables']
 
 - name: Create knockd configuration
@@ -41,6 +50,7 @@
   register: knockd_config_result
   notify:
    - restart knockd
+  when: knock_feature_enabled
   tags: ['firewall', 'iptables']
 
 - name: Assert firewall variables
