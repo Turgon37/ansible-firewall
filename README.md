@@ -5,6 +5,8 @@ Ansible Role Firewall
 
 This roles allow configuration of firewall rules
 
+:warning: Please take note that the entire role is built on the concept of "Nothing is allowed except what is allowed"
+
 ## OS Family
 
 This role is available for Debian, Ubuntu and CentOS
@@ -18,7 +20,7 @@ At this day the role can be used to configure :
 The IPv6 feature exist but has not been tested yet, so I discourage you to use it before I've performed some tests
 The firewalld is not implemented because I consider this tools as to high-level to manage iptables rules. So it's that why I've decide (for now) to not use it.
 
-  * Port knocking
+  * Port knocking security
 
 ## Configuration
 
@@ -79,9 +81,11 @@ This dictionnary must contains a key per knocking rule. Under each of theses key
 | sequence_timeout| optionnal (default 5)  | int                            | the number of second in which you must complete the sequence to valid it |
 | tcpflags        | optionnal (default syn)| tcp flags                      | the list of flags to search for in incoming packets                      |
 | window_timeout  | optionnal (default 10) | int                            | the number of second the port will stay open if sequence is valided      |
-| rule            | mandatory              | rule configuration (see above) |                                                                          | 
+| rule            | mandatory              | rule configuration (see above) |                                                                          |
 
-The knock configuration create automatically an iptables chain which the name of the key prefixed by 'KNOCK_'. Each rules created by the knockd daemon will be put into the associated chain. If you want to use this feature you must redirect all packets of your service into this chain by using a rule such as ```iptables -A INPUT -p tcp --dport 22 -j KNOCK_SSH```
+The knock configuration create automatically an iptables chain which the name of the key prefixed by 'KNOCK_'. Each rules created by the knockd daemon will be put into the associated chain.
+
+:warning: A rule will be automatically added to the list of filter rule. This one will contains all iptables spec from the 'rule' bloc of the corrsponding item in iptables__knock_rules. This rule will redirect all matching packets into the firewall table.
 
 ### Example
 
@@ -129,6 +133,7 @@ iptables__filter_rules:
 
   * Simple Knock rule
 
+This rule below will create a simple knockd setting
 ```
 iptables__knock_rules:
   SSH:
@@ -144,4 +149,3 @@ iptables__knock_rules:
       destination_address: 10.0.0.1
       comment: Allow SSH temporary for incoming connection
 ```
-
