@@ -14,8 +14,6 @@
     knock_feature_enabled: "{{ True if iptables__knock_rules | length > 0 else False }}"
   tags: ['firewall', 'iptables']
 
-- debug: var=knock_feature_enabled
-  
 - name: Include knockd init
   include: install-knockd.yml
   when: knock_feature_enabled
