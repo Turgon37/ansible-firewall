@@ -37,6 +37,14 @@
   when: knock_feature_enabled
   tags: ['firewall', 'iptables']
 
+- name: Create automatic redirect rule for knock rules
+  set_fact:
+    iptables__filter_rules: "[ {{ iptables__knock_rules[item].rule|combine({'target': 'KNOCK_' + item, 'comment': 'KNOCK_' + item + ':: ' + iptables__knock_rules[item].rule.comment|d()})  }} ] + {{ iptables__filter_rules }}"
+  with_items:
+    - "{{ iptables__knock_rules.keys() }}"
+  when: knock_feature_enabled
+  tags: ['firewall', 'iptables']
+
 - name: Create knockd configuration
   become: yes
   template:
