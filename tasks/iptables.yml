@@ -76,7 +76,6 @@
     owner: root
     group: root
     mode: 0600
-  register: config_result
   notify:
    - restart iptables
   tags: ['firewall', 'iptables']
