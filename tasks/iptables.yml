@@ -78,6 +78,7 @@
     mode: 0600
   notify:
    - restart iptables
+   - restart docker
   tags: ['firewall', 'iptables']
 
 - name: Create iptables6 configuration
@@ -91,6 +92,7 @@
   register: config_result
   notify:
    - restart iptables
+   - restart docker
   tags: ['firewall', 'iptables']
 
 - name: Ensure iptables is started and enabled on boot
