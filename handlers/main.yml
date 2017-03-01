@@ -5,8 +5,6 @@
   service:
     name: "{{ iptables__service_name }}"
     state: restarted
-  notify:
-    - restart docker
 
 - name: restart knockd
   service:

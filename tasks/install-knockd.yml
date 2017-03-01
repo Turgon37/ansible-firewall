@@ -33,10 +33,11 @@
   when: ansible_os_family == 'Debian'
   tags: ['firewall', 'iptables']
   
-- name: Ensure knockd is enabled on boot
+- name: Ensure knockd is started and enabled on boot
   become: yes
   service:
     name: "{{ knockd__service_name }}"
+    state: started
     enabled: yes
   changed_when: False
   tags: ['firewall', 'iptables']
