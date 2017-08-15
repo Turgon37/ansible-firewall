@@ -14,6 +14,7 @@ install:
   #  - "echo -en  '[defaults]\nroles_path = ../' > ansible.cfg"
   #- cat ansible.cfg
   - cp tests/ansible.cfg ./
+  - git clone https://github.com/Turgon37/ansible-network.git ../network
 
 script:
   - ansible --version
